@@ -1,0 +1,45 @@
+<div class="main posts-show">
+  <div class="container">
+    <div class="posts-show-item">
+    <div class="post-user-name">
+        <!-- ユーザーの画像が表示されるように、以下のsrcの中を埋めてください -->
+        <img src="<%= "/user_images/#{@user.image_name}" %>">
+        
+        <!-- link_toメソッドを用いて、ユーザー詳細ページへのリンクを作成してください -->
+        <%= link_to(@user.name, "/users/#{@user.id}") %>
+      </div>
+    <p>
+      <%= @post.content %>
+    </p>
+     <div post-time>
+       <%= @post.created_at %>
+     </div>
+
+     <% if Like.find_by(user_id: @current_user.id, post_id: @post.id) %>
+      <%= form_with(url: "/likes/#{@post.id}/destroy", method: :post) do |form| %>
+      <%= form.submit "いいね済" %>
+      <i class="fa-solid fa-thumbs-up"></i>
+       
+       <% end %>
+      <% else %>
+      <%= form_with(url: "/likes/#{@post.id}/create", method: :post) do |form| %>
+      <%= form.submit "いいね" %>
+      <i class="fa-regular fa-thumbs-up"></i>
+       <% end %>
+      <% end %>
+
+      <%= @likes_count %>
+
+     <% if @post.user_id == @current_user.id %>
+     <div class="post-menus">
+     <%= link_to("編集", "/posts/#{@post.id}/edit") %>
+     <%= form_with(url: "/posts/#{@post.id}/destroy", method: :post) do |form| %>
+    <%= form.submit "削除" %>
+    <% end %>
+    <% end %>
+
+      </div>
+     
+    </div>
+  </div>
+</div> 
